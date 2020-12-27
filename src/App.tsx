@@ -17,12 +17,11 @@ const URL = "https://dog.ceo/api/breeds/image/random";
 function App() {
   const [show, setShow] = useState(true);
   //1.获取请求后的数据
-  const [data, loading] = useUrlLoader(URL);
+  const [data, loading] = useUrlLoader(URL,[show]);
   //2.因为data是any类型，我们需要将其断言为IShowResult类型
   const dogResult = data as IShowResult;
 
 
-  const positions = useMousePosition();
   return (
     <div className="App">
       <header className="App-header">
@@ -34,14 +33,11 @@ function App() {
               setShow(!show);
             }}
           >
-            toggle tracker
+            加载dog
           </button>
         </p>
         {loading ? <p>🐕🐕读取中</p> : <img src={dogResult && dogResult.message} alt="狗狗照片" />}
         {show && <MouseTracker />}
-        <p>
-          X:{positions.x},Y:{positions.y}
-        </p>
         <LikeButton />
         <a
           className="App-link"

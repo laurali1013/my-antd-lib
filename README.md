@@ -9,3 +9,7 @@
 # 3-6:useEffect hook
   - useEffect第一个参数是一个函数，第二个参数是依赖，如果为空[],则相当于componentdidmount 
   - useEffect的返回值是一个函数，用于清除上次useEffect的副作用
+# 3-13:useRef hook
+  - useRef在所有的render中都保持唯一的引用，是取值的最终状态
+  - ref修改后，不会重新渲染
+  - 可以绑定dom节点

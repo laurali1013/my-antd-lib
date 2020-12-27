@@ -7,4 +7,5 @@
   - setState是替换不是合并，所以每次setState都要把该state的内容全部赋值一遍
     
 # 3-6:useEffect hook
-  - 
+  - useEffect第一个参数是一个函数，第二个参数是依赖，如果为空[],则相当于componentdidmount
+  - useEffect的返回值是一个函数，用于清除上次useEffect的副作用

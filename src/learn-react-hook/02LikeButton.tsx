@@ -7,7 +7,7 @@ const LikeButton: FC = () => {
   //不需要清除的副作用
   useEffect(() => {
     document.title = `点击了${like}次`;
-  });
+  },[like]);
   return (
     <>
       <button

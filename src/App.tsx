@@ -2,7 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-// import Hello from './components/hello/Hello';
+import Hello from './learn-react-hook/01Hello';
 
 function App() {
   return (
@@ -12,6 +12,8 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <Hello />
+        <Hello  message="hello world 2"/>
         <a
           className="App-link"
           href="https://reactjs.org"

@@ -5,9 +5,23 @@ import './App.css';
 import MouseTracker from './learn-react-hook/03MouseTracker';
 import LikeButton from './learn-react-hook/02LikeButton';
 import useMousePosition from './learn-react-hook/04useMousePosition';
+import useUrlLoader from './learn-react-hook/05useUrlLoader';
 
+//定义请求成功后的返回数据类型
+interface IShowResult{
+  message: string;
+  status: string;
+}
+
+const URL = "https://dog.ceo/api/breeds/image/random";
 function App() {
   const [show, setShow] = useState(true);
+  //1.获取请求后的数据
+  const [data, loading] = useUrlLoader(URL);
+  //2.因为data是any类型，我们需要将其断言为IShowResult类型
+  const dogResult = data as IShowResult;
+
+
   const positions = useMousePosition();
   return (
     <div className="App">
@@ -23,6 +37,7 @@ function App() {
             toggle tracker
           </button>
         </p>
+        {loading ? <p>🐕🐕读取中</p> : <img src={dogResult && dogResult.message} alt="狗狗照片" />}
         {show && <MouseTracker />}
         <p>
           X:{positions.x},Y:{positions.y}

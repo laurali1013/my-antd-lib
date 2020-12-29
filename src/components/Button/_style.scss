@@ -1,0 +1,63 @@
+.btn{
+    position: relative;
+    display: inline-block;
+    box-shadow: $btn-box-shadow;
+
+    border:$border-width 1px transparent;
+    @include button-size($btn-padding-y,$btn-padding-x,$btn-font-size,$btn-border-radis);
+    
+    font-weight: $btn-font-weight;
+    line-height: $btn-line-height;
+    color:$body-color;
+    white-space: nowrap;
+    vertical-align: middle;
+    background-image: none;
+    cursor: pointer;
+    &.disabled,
+    &[disabled]{
+        cursor:not-allowed;
+        opacity: $btn-disabled-opacity;
+        box-shadow: none;
+        > *{
+            pointer-events: none;
+        }
+    }
+}
+
+.btn-primary{
+    @include btn-style($primary,$white,$primary);
+}
+.btn-danger{
+    @include btn-style($danger,$white,$danger);
+}
+.btn-default{
+    @include btn-style($gray-400,$body-color,$white,$white,$primary,$primary);
+}
+.btn-link{
+    font-weight: $font-weight-normal;
+    color: $btn-link-color;
+    text-decoration: $link-decoration;
+    box-shadow: none;
+    &:hover{
+        color: $btn-link-hover-color;
+        text-decoration: $link-hover-decoration;
+    }
+    &:focus,
+    &.focus{
+        color: $btn-link-hover-color;
+        text-decoration: $link-hover-decoration;
+        box-shadow: none;
+    }
+    &:disabled,
+    &.disabled{
+        color: $btn-link-disabled-color;
+        pointer-events: none;
+    }   
+}
+.btn-lg{
+    @include button-size($btn-padding-y-lg,$btn-padding-x-lg,$btn-font-size-lg,$btn-border-radis-lg)
+}
+
+.btn-sm{
+    @include button-size($btn-padding-y-sm,$btn-padding-x-sm,$btn-font-size-sm,$btn-border-radis-sm)
+}

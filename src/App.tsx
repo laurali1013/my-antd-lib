@@ -1,30 +1,24 @@
-import React from "react";
-import "./App.css";
-import LikeButton from "./learn-react-hook/02LikeButton";
-
-interface IThemeProps{
-  [key: string]: { color: string; background: string;}
-}
-const themes: IThemeProps = {
-  'light': {
-    color:'#000',
-    background:'#eee',
-  },
-  'dark': {
-    color:'#fff',
-    background:'#222',
-  }
-}
-
-export const ThemeContext = React.createContext(themes.dark);
+import React from 'react';
+import Button from './components/Button/Button';
 
 function App() {
   return (
-    <div className="App">
-      <ThemeContext.Provider value={themes.dark}>
-        <LikeButton/>
-      </ThemeContext.Provider>
-    </div>
+    <>
+      <Button>Default Button</Button>
+      <Button btnType="primary">Primary Button</Button>
+      <Button btnType="danger" onClick={() => console.log("hello")}>Danger Button</Button>
+      <Button btnType="link" href="http://www.w3school.com.cn">
+        Link Button
+      </Button>
+      <p>--</p>
+      <Button disabled>Disabled Button</Button>
+      <Button className="disabled" btnType="link">
+        Disabled Link Button
+      </Button>
+      <p>--</p>
+      <Button size="lg">Large Button</Button>
+      <Button size="sm">Small Button</Button>
+    </>
   );
 }
 

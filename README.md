@@ -25,8 +25,8 @@
     - 不同的Button Size：Normal、Small、Large
     - Disabled：Disabled、linkButton（href）没有默认的disabled属性，需要单独处理
     - 支持原生属性、children属性
-     （React.ButtonHTMLAttributes<HTMLelement>）
-      patial属性
+     `React.ButtonHTMLAttributes<HTMLelement>`
+      Patial解决两种props重叠问题
     - 实现流程
       - 创建常量（type和size）
       - 创建接口props（type，size，disabled，classname，href，children）
@@ -39,5 +39,18 @@
   - button组件的样式
   - button组件的测试
   - button组件的storybook
-
-    
+### 5代码测试
+  - 测试金字塔：Unit->Service->UI
+#### 5-2Jest测试
+  - React的测试工具
+    - test Utilities：，太过复杂
+    - enzyme：airbnb推出的，可以轻松对React组件的输出进行断言、操控、遍历
+    - react testing library：react官方推荐，jest-dom：新增了一些断言，
+      - mock function 事件处理函数，调用jest.fn()创建一个被监控的func
+      - fireEvent触发不同的用户事件：fireEvent.click(element){expect(jest.fun().断言) }
+#### 6menu组件
+  - 6.1Menu组件
+    - 横向/纵向菜单、高亮当前选中菜单active、菜单项可以disabled、是否有下拉菜单、下拉菜单的开合、
+    - Menu组件属性和方法（onSelect方法、mode、activeIndex、className）
+    - MenuItem组件属性和方法(index、disabled、className)
+    - children可以为任何元素

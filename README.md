@@ -51,6 +51,9 @@
 #### 6menu组件
   - 6.1Menu组件
     - 横向/纵向菜单、高亮当前选中菜单active、菜单项可以disabled、是否有下拉菜单、下拉菜单的开合、
-    - Menu组件属性和方法（onSelect方法、mode、activeIndex、className）
-    - MenuItem组件属性和方法(index、disabled、className)
+    - Menu组件属性和方法（onSelect方法、mode、defaultIndex、className，style：React.CSSPproperties）
+    - MenuItem组件属性和方法(index、disabled、className、style：React.CSSPproperties)
     - children可以为任何元素
+    - 把父组件的属性传递给子组件useContext（index、onSelect）
+    - 控制高亮的index使用useState
+    - https://css-tricks.com/讲解css样式

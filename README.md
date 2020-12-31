@@ -57,3 +57,138 @@
     - 把父组件的属性传递给子组件useContext（index、onSelect）
     - 控制高亮的index使用useState
     - https://css-tricks.com/讲解css样式
+#### 7 icon组件
+  - 安装
+    - npm i --save @fortawesome/fontawesome-svg-core
+    - npm install --save @fortawesome/free-solid-svg-icons
+    - npm install --save @fortawesome/react-fontawesome
+    
+  - 使用方法1：**Individual Use单独使用**，每次都引入很麻烦
+     ```react
+     import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+     import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+     const element = <FontAwesomeIcon icon={faCoffee} />
+    ```
+    
+  - 使用方法2：**Global Use全局使用**，使用build library
+     ```react
+     import { library } from '@fortawesome/fontawesome-svg-core'
+     //fas是svg-icons所有突变
+     import { fas } from '@fortawesome/free-solid-svg-icons'
+     library.add(fas) //把图标添加到library中
+    ```
+    
+  - 准备ThemeProps
+    - ThemeProps：primary|secondary|success|info|warning|danger|light|dark
+    - 接口注意要继承原生属性FontAwesomeIconProps
+    - 基本class-’laura-icon‘，class的格式'icon-primary'，
+    - 要继承原生属性:{...restProps}
+    
+  - 样式
+    
+    - sass提供@each规则允许我们循环list或者map
+    
+      ```scss
+      $sizes: 40px, 50px, 80px;
+      @each $size in $sizes {
+        .icon-#{$size} {
+          font-size: $size;
+          height: $size;
+          width: $size;
+        }
+      }
+      $icons: ("eye": "\f112", "start": "\f12e", "stop": "\f12f");
+      @each $name, $glyph in $icons {
+        .icon-#{$name}:before {
+          display: inline-block;
+          font-family: "Icon Font";
+          content: $glyph;
+        }
+      }
+      ```
+    
+    - CSS**transform**属性允许你旋转，缩放，倾斜或平移给定元素。这是通过修改CSS视觉格式化模型的坐标空间来实现的
+    
+      ```css
+      /* Keyword values */
+      transform: none;
+      /* Function values */
+      transform: matrix(1.0, 2.0, 3.0, 4.0, 5.0, 6.0);
+      transform: translate(12px, 50%);
+      transform: translateX(2em);
+      transform: translateY(3in);
+      transform: scale(2, 0.5);
+      transform: scaleX(2);
+      transform: scaleY(0.5);
+      transform: rotate(0.5turn);
+      transform: skew(30deg, 20deg);
+      transform: skewX(30deg);
+      transform: skewY(1.07rad);
+      transform: matrix3d(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0);
+      transform: translate3d(12px, 50%, 3em);
+      transform: translateZ(2px);
+      transform: scale3d(2.5, 1.2, 0.3);
+      transform: scaleZ(0.3);
+      transform: rotate3d(1, 2.0, 3.0, 10deg);
+      transform: rotateX(10deg);
+      transform: rotateY(10deg);
+      transform: rotateZ(10deg);
+      transform: perspective(17px);
+      /* Multiple function values */
+      transform: translateX(10px) rotate(10deg) translateY(5px);
+      /* Global values */
+      transform: inherit;
+      transform: initial;
+      transform: unset;
+      ```
+    
+    - css解决不了的事情，下拉菜单渐显渐隐状态（display:none不占用空间，opacity占用空间）
+    
+      - 原始实现方法：
+    
+        display:none--->display:block --->动画--->display:block
+    
+        ​                               opacity:0                            opacity:1
+    
+        display:block--->动画 --->display:block--->display:none
+    
+        ​             opacity:1               opacity:0
+    
+      - 使用ReactTransitionGroup实现：
+    
+        组件从无到有、从有到无过程添加多个描述组件周期的class
+    
+        安装npm install react-transition-group --save
+    
+        安装npm install @types/react-transition-group --save
+    
+        \*-enter--->force a reflow(动画)--->\*-enter-active--->自定义timeout--->\*-enter-done
+    
+        \*-exit--->force a reflow(动画)--->\*-exit-active--->自定义timeout--->\*-exit-done
+    
+        ```css
+        .my-node-enter {
+          opacity: 0;
+        }
+        .my-node-enter-active {
+          opacity: 1;
+          transition: opacity 200ms;
+        }
+        .my-node-exit {
+          opacity: 1;
+        }
+        .my-node-exit-active {
+          opacity: 0;
+          transition: opacity 200ms;
+        }
+        ```
+    
+  - 动画
+    
+    - 给下拉菜单添加动画CSSTransition
+    
+    - 参考animation.css，umountOnExit
+    - CSSTransition 的props：in、timeout、animation（className替换此字面量）
+    
+    
+

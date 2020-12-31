@@ -4,6 +4,9 @@ import classNames from 'classnames';
 import { MenuContext } from './Menu';
 import { MenuItemProps } from './MenuItem';
 
+import Icon from './../Icon/Icon';
+import MyTransition from '../MyTransition/MyTransition';
+
 //定义SubMenu接口
 export interface SubMenuProps{
     //SubMenu的索引
@@ -27,7 +30,7 @@ const SubMenu: FC<SubMenuProps> = (props) => {
     //是否展开SubMenu状态
     const [menuOpen, setMenuOpen] = useState(isOpend);  
     //定义类
-    const classes = classNames('menu-item submenu-item', className, {
+    const classes = classNames('menu-item submenu-main', className, {
         'is-active': context.index === index,
         'is-vertical': context.mode === 'vertical',
         'is-opened': menuOpen,
@@ -57,7 +60,7 @@ const SubMenu: FC<SubMenuProps> = (props) => {
     } : {};
     //SubMenu展开的Item要有index属性，需要使用cloneElement
     const renderChildren = () => {
-        const subMenuClasses = classNames('laura-submenu', {
+        const subMenuClasses = classNames('submenu', {
             'menu-opened':menuOpen,
         })
         const childrenComponent = React.Children.map(children, (child, i) => {
@@ -69,15 +72,25 @@ const SubMenu: FC<SubMenuProps> = (props) => {
             }
         })
         return (
-            <ul className={subMenuClasses}>
-                {childrenComponent}
-            </ul>
+            <MyTransition
+                in={menuOpen}
+                timeout={300}
+                animation="zoom-in-top"
+            >
+                <ul className={subMenuClasses}>
+                    {childrenComponent}
+                </ul>
+            </MyTransition>
+
         )
     }
-    return (
+    return (   
         <li key={index} className = {classes} {...hoverEvent}>
-            <div className="submenu-title" {...clickEvent}>{title}</div>
-            {renderChildren()}
+        <div className="submenu-title" {...clickEvent}>
+            {title}
+            <Icon icon='angle-down' className='arrow-icon'/>
+        </div>
+        {renderChildren()}
         </li>
     )
 }

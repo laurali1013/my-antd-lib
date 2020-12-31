@@ -1,13 +1,21 @@
 import React from 'react';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+
+
 import Menu from './components/Menu/Menu';
 import MenuItem from './components/Menu/MenuItem';
 import SubMenu from './components/Menu/SubMenu';
+import Icon from './components/Icon/Icon';
+
+library.add(fas);
 
 function App() {
   return (
     <>
-      <Menu mode='vertical' defaultIndex={'0'} onSelect={(index) => {alert(index) }} defaultOpenSubMenus={['2']}>
+      <Icon icon='arrow-down' theme='danger' size='10x'/>
+      <Menu mode='horizontal' defaultIndex={'0'} defaultOpenSubMenus={['2']}>
         <MenuItem>11</MenuItem>
         <MenuItem disabled>22</MenuItem>
         <SubMenu title="hello">

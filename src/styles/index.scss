@@ -7,8 +7,14 @@
 //mixin
 @import 'mixin';
 
+//animation
+@import 'animation';
+
 //button组件的布局
 @import '../components/Button/style';
 
 //menu组件布局
 @import '../components/Menu/style';
+
+//icon
+@import '../components/Icon/style';

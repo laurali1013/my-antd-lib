@@ -1,5 +1,6 @@
 import React,{FC,useState,ChangeEvent, ReactElement} from "react";
 import Input, { InputProps } from '../Input/Input';
+import Icon from '../Icon/Icon';
 
 //datasource的格式
 interface DataSourceObject{
@@ -20,6 +21,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     //定义state
     const [InputValue, setInputValue] = useState('');
     const [Suggetions, setSuggetions] = useState<DataSourceType[]>([]);
+    const [isLoading, setLoading] = useState(false);
     //2.classes
     //3.操作
     //实现受控组件:当输入框内容发生变化触发此事件
@@ -32,8 +34,10 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         if (value) {
             const results = fetchSuggestions(value);
             if (results instanceof Promise) {
+                setLoading(true);
                 results.then(data => {
                     setSuggetions(data);
+                    setLoading(false);
                 })
             } else {
                 setSuggetions(results);   
@@ -67,10 +71,10 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
             </ul>
         )
     }
-
     return (
         <div className='laura-auto-complete'>
             <Input value={InputValue} style={{width:"300px"}} {...restProps} onChange={handleChange} />
+            {isLoading && <ul><Icon icon='spinner' spin/></ul>}
             { Suggetions && generateDropdown()}
         </div>
     )

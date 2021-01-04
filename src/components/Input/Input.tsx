@@ -4,7 +4,6 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 import Icon from '../Icon/Icon';
 
-
 type InputSize = 'lg' | 'sm';
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size'>{
@@ -40,7 +39,18 @@ const Input: FC<InputProps> = (props) => {
         'input-group-append': !!append,
         'input-group-prepend':!!prepend,
     });
-
+    //解决value和default value冲突的问题
+    const fixControlledValue = (value: any) => {
+        if (typeof value === 'undefined' || value === null) {
+            return '';
+        }
+        return value;  
+    }
+    if ('value' in props) {
+        delete restProps.defaultValue;
+        restProps.value = fixControlledValue(props.value);
+    } 
+    
     return (
         //根据属性添加特定的节点
         <div className={classes} style={ style }>
@@ -49,8 +59,7 @@ const Input: FC<InputProps> = (props) => {
             <input type="text" className='laura-input-inner' {...restProps} disabled={disabled} />
             {append && <div className='laura-input-group-append'>{append}</div>}
         </div>
-    )
-    
+    )    
 }
 
 export default Input;

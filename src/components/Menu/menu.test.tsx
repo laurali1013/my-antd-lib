@@ -107,19 +107,19 @@ describe('test menu', () => {
         //查看classname是否有vertical类
         expect(menuElement).toHaveClass('menu-vertical');
     })
-    it('should render dropdown wehn hover on subMenu', async () => {
+    it('should render dropdown when hover on subMenu', async () => {
         //drop1默认menu-opend的display是none
-        expect(wrapper.queryByText('drop1')).not.toBeVisible();
+        expect(wrapper.queryByText('drop1') as any).not.toBeInTheDocument();
         const dropdownElement = wrapper.getByText('dropdown');
         //横向hover进入事件，drop1元素应该为block，显示状态
         fireEvent.mouseEnter(dropdownElement);
-        await waitFor(() => expect(wrapper.queryByText('drop1')).toBeVisible());
+        await waitFor(() => expect(wrapper.queryByText('drop1') as any).toBeInTheDocument());
         //点击drop1元素，触发onSelect事件
         fireEvent.click(wrapper.getByText('drop1'))
         expect(testProps.onSelect).toHaveBeenCalledWith('3-0');
         //横向hover离开事件，drop1组件display为none
         fireEvent.mouseLeave(dropdownElement);
-        await waitFor(()=>expect(wrapper.queryByText('drop1')).not.toBeVisible());
+        await waitFor(() => expect(wrapper.queryByText('drop1')).not.toBeInTheDocument());
         
     })
 })

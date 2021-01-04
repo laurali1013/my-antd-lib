@@ -1,19 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React,{FC,useState,ChangeEvent, ReactElement ,useEffect} from "react";
+import React, { FC, useState, ChangeEvent, KeyboardEvent, ReactElement, useEffect } from "react";
+import classNames from 'classnames';
+
 import Input, { InputProps } from '../Input/Input';
 import Icon from '../Icon/Icon';
 
 import useDebounce from './../../hooks/useDebounce';
 
 //datasource的格式
-interface DataSourceObject{
+interface DataSourceObject {
     value: string;
 }
 //datasource如果有格式就把格式和DataSourceObject混合返回
 export type DataSourceType<T = {}> = T & DataSourceObject;
 
-export interface AutoCompleteProps extends Omit<InputProps,'onSelect'> {
-    fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[] >;
+export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
+    fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[]>;
     onSelect?: (item: DataSourceType) => void;
     renderOption?: (item: DataSourceType) => ReactElement;
 }
@@ -25,6 +27,8 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     const [InputValue, setInputValue] = useState(value as string);
     const [Suggetions, setSuggetions] = useState<DataSourceType[]>([]);
     const [isLoading, setLoading] = useState(false);
+    //通过上下键盘，可以选中结果上下移动，并高亮条目
+    const [hightlightIndex, setHighlightIndex] = useState(-1);
     const debouncedValue = useDebounce(InputValue, 500);
     //定义副作用：当InputValue变化时，触发副作用
     useEffect(() => {
@@ -45,6 +49,33 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         }
     }, [debouncedValue]);
     //3.操作
+    //高亮函数
+    const HighLight = (index: number) => {
+        if (index < 0) index = 0;
+        if (index >= Suggetions.length - 1) index = Suggetions.length - 1;
+        setHighlightIndex(index);
+    }
+    //按键按下后的处理函数
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        switch (e.keyCode) {
+            case 13:
+                if (Suggetions[hightlightIndex]) {
+                    handleSelect(Suggetions[hightlightIndex]);
+                }
+                break;
+            case 38:
+                HighLight(hightlightIndex - 1);
+                break;
+            case 40:
+                HighLight(hightlightIndex + 1);
+                break;
+            case 27:
+                setSuggetions([]);
+                break;
+            default: break;
+        }
+
+    }
     //实现受控组件:当输入框内容发生变化触发此事件
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         //获取value
@@ -62,8 +93,8 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         setSuggetions([]);
         //调用onSelect方法
         if (onSelect) {
-            onSelect(item);  
-        }    
+            onSelect(item);
+        }
     }
     //自定义模板：如果有自定义模板就使用自定义模板，如果没有就返回item
     const renderTemplate = (item: DataSourceType) => {
@@ -73,17 +104,31 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     const generateDropdown = () => {
         return (
             <ul>
-                {Suggetions.map((suggest, index) => (
-                    <li key={index} onClick={() => { handleSelect(suggest) }}>{renderTemplate(suggest)}</li>
-                ))}
-            </ul>
-        )
+                {Suggetions.map((suggest, index) => {
+                    const cnames = classNames('suggestion-item', {
+                        'is-active': index === hightlightIndex
+                    })
+                    return (
+                        < li key={index} className={cnames} onClick={() => { handleSelect(suggest) }}> { renderTemplate(suggest)}</li>
+                    )
+
+                })
+                }
+            </ul >            
+        ) 
+           
     }
-    return (
-        <div className='laura-auto-complete'>
-            <Input value={InputValue} style={{width:"300px"}} {...restProps} onChange={handleChange} />
-            {isLoading && <ul><Icon icon='spinner' spin/></ul>}
-            { Suggetions && generateDropdown()}
-        </div>
-    )
+return (
+    <div className='laura-auto-complete'>
+        <Input
+            value={InputValue}
+            style={{ width: "300px" }}
+            {...restProps}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+        />
+        {isLoading && <ul><Icon icon='spinner' spin /></ul>}
+        { Suggetions && generateDropdown()}
+    </div>
+)
 }

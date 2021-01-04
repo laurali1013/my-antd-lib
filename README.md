@@ -181,14 +181,123 @@
           opacity: 0;
           transition: opacity 200ms;
         }
-        ```
-    
-  - 动画
-    
-    - 给下拉菜单添加动画CSSTransition
-    
+        ```    
+  - 动画    
+    - 给下拉菜单添加动画CSSTransition    
     - 参考animation.css，umountOnExit
     - CSSTransition 的props：in、timeout、animation（className替换此字面量）
+- storybook
+  - 写story的方式
+    - 1.直接函数定义导出即可
+    ```ts
+      export const Primary: React.VFC<{}> = () => <Button background="#ff0" label="Button">Button</Button>;
+    ```
+    - 2.模板定义，通过模板参数设置并导出
+    ```ts
+      const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+      export const Primary = Template.bind({});
+      Primary.args = { background: '#ff0', label: 'Button' };
+    ```
+    - 3.使用参数定义
+    ```ts
+      export default {
+        title: 'Button',
+        component: Button,
+        parameters: {
+          backgrounds: {
+            values: [
+              { name: 'red', value: '#f00', },
+            ]
+          }
+        }
+      }
+    ```
+    - 4.使用装饰器定义
+    ```ts
+      export default {
+        title: "Button",
+        component: Button,
+        decorators:  [(Story) => <div style={{ margin: '3em' }}><Story/></div>]
+      };
+    ```
+    - 5.定义story包含两个component
+    ```ts
+      import List from './List';
+      import ListItem from './ListItem';
+      export const ManyItems = (args) => (
+        <List {...args}>
+          <ListItem />
+          <ListItem />
+          <ListItem />
+        </List>
+      );
+    ```
+    - 2.story重命名
+    ```ts
+      export const Primary = () => <Button primary label="Button"/>;
+      Primary.storyName = 'I am the primary';
+    ```
+  - 获取动作参数有两种方法
+    - 1.使用argTypes定义stoybook要有一个arg为action,一般在组件级别执行此操作是有意义的
+      当Storybook看到这个argType时，它将创建一个arg，该arg被设置为一个特殊的“action”回调。
+    ```ts
+    export default {
+      title: 'Button',
+      argTypes: { onClick: { action: 'clicked' } },
+    };
+    ```
+    - 2.可以使用parameters.actions.handles 参数查看事件是否传入到了正确的Html事件中
+    ```ts
+      export default {
+        title: 'Button',
+        parameters: {
+          actions: {
+            handles: ['mouseover', 'click .btn'],
+          },
+        },
+      };
+    ```
+  - addon插件说明
+    - addon-actions：组件操作事件，如click、change
+    - addon-links：链接，如某个Story中单击按钮，链接到另一个Story中
+    - addon-notes：Story的备注 
+    - addon-options：调整StoryBook的外观
+    - addon-knobs：在页面上改变变量
+  - decorator装饰：用于包装story
+    - 1.story装饰器
+    ```ts
+      // Button.stories.js
+      export const Primary = …
+      Primary.decorators = [(Story) => <div style={{ margin: '3em' }}><Story/></div>]
+    ```
+    - 2.component装饰器
+    ```ts
+      // Button.stories.js
+      export default {
+        title: "Button",
+        component: Button,
+        decorators:  [(Story) => <div style={{ margin: '3em' }}><Story/></div>]
+      };
+    ```
+    - 3.全局装饰器
+    ```ts
+      // .storybook/preview.js
+      export const decorators = [(Story) => <div style={{ margin: '3em' }}><Story/></div>];
+    ```
+  - panel
+- autoComplete
+  - 属性
+    - data:string[]:一组数据作为筛选查找的源
+    - fetchSuggestions:(keyword:string，data:string[])=>string[]|Promise 筛选函数：有可能是同步也有可能是异步
+    - onSelect:(item:string)=>void:选择的内容
+    - 键盘上下键
+    - 用户自定义的一些选项
+    - 函数防抖debounce
+    - 下拉菜单收起
+
+
+
+
     
     
 

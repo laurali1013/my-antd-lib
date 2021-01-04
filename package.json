@@ -6,6 +6,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.14",
+    "@storybook/addon-docs": "^6.1.11",
+    "@storybook/addon-storysource": "^6.1.11",
     "@testing-library/jest-dom": "^5.11.6",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
@@ -31,7 +33,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +56,14 @@
     ]
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.12.11"
+    "@babel/preset-env": "^7.12.11",
+    "@storybook/addon-actions": "^6.1.11",
+    "@storybook/addon-essentials": "^6.1.11",
+    "@storybook/addon-info": "^5.3.21",
+    "@storybook/addon-links": "^6.1.11",
+    "@storybook/node-logger": "^6.1.11",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/react": "^6.1.11",
+    "react-docgen-typescript-loader": "^3.7.2"
   }
 }

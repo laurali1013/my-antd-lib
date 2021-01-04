@@ -8,23 +8,35 @@ type MenuMode = "horizontal" | "vertical";
 
 //定义MenuProps接口
 export interface MenuProps {
-    //Menu默认索引
+    /**
+    * 设置索引
+    */
     defaultIndex?: string;
-    //横向或纵向排列
+    /**
+    * 设置模式："horizontal" or "vertical"
+    */
     mode?: MenuMode; 
-    //选中子组件触发事件
+    /**
+    * 设置选中事件
+    */
     onSelect?: (selectIndex: string) => void;
-    //类
+    /**
+    * 设置类名
+    */
     className?: string;
-    //样式
+    /**
+    * 设置类名
+    */
     style?: React.CSSProperties;
-    //有哪些SubMenu是默认展开的
+    /**
+    * 设置默认打开的SubMenu
+    */
     defaultOpenSubMenus?: string[];
 }
 
-//创建一个context：用于将父组件的属性传递给子组件：即Menu->MenuItem，SubMenu
-//1.创建context接口
 export interface IMenuContext {
+    //创建一个context：用于将父组件的属性传递给子组件：即Menu->MenuItem，SubMenu
+    //1.创建context接口
     //索引
     index: string;
     //选中子组件触发事件
@@ -37,7 +49,16 @@ export interface IMenuContext {
 //2.创建context:接口类型为IMenuContext,病设置默认的index值为0
 export const MenuContext = createContext<IMenuContext>({ index: '0' });
 
-//Menu组件
+/**
+ * 页面中常用的的菜单元素，适合于完成特定的交互
+ * ### 引用方法
+ *
+ * ~~~js
+ * import { Menu } from 'laura-component-lib'
+ * import { MenuItem } from 'laura-component-lib'
+ * import { SubMenu } from 'laura-component-lib'
+ * ~~~
+ */
 const Menu: FC<MenuProps> = (props) => {
     //获取props
     const { children, defaultIndex, mode, onSelect, className, style, defaultOpenSubMenus } = props;

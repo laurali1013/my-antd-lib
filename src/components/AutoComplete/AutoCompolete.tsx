@@ -1,6 +1,9 @@
-import React,{FC,useState,ChangeEvent, ReactElement} from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React,{FC,useState,ChangeEvent, ReactElement ,useEffect} from "react";
 import Input, { InputProps } from '../Input/Input';
 import Icon from '../Icon/Icon';
+
+import useDebounce from './../../hooks/useDebounce';
 
 //datasource的格式
 interface DataSourceObject{
@@ -19,10 +22,28 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     //1.获取props
     const { fetchSuggestions, onSelect, renderOption, value, ...restProps } = props;
     //定义state
-    const [InputValue, setInputValue] = useState('');
+    const [InputValue, setInputValue] = useState(value as string);
     const [Suggetions, setSuggetions] = useState<DataSourceType[]>([]);
     const [isLoading, setLoading] = useState(false);
-    //2.classes
+    const debouncedValue = useDebounce(InputValue, 500);
+    //定义副作用：当InputValue变化时，触发副作用
+    useEffect(() => {
+        //获取下拉列表
+        if (debouncedValue) {
+            const results = fetchSuggestions(debouncedValue);
+            if (results instanceof Promise) {
+                setLoading(true);
+                results.then(data => {
+                    setSuggetions(data);
+                    setLoading(false);
+                })
+            } else {
+                setSuggetions(results);
+            }
+        } else {
+            setSuggetions([]);
+        }
+    }, [debouncedValue]);
     //3.操作
     //实现受控组件:当输入框内容发生变化触发此事件
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,20 +52,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         //更新value
         setInputValue(value);
         //获取下拉列表
-        if (value) {
-            const results = fetchSuggestions(value);
-            if (results instanceof Promise) {
-                setLoading(true);
-                results.then(data => {
-                    setSuggetions(data);
-                    setLoading(false);
-                })
-            } else {
-                setSuggetions(results);   
-            }    
-        } else {
-            setSuggetions([]);
-        }
+        //改为用useEffect方法实现
     }
     //选中下拉列表的item时触发事件
     const handleSelect = (item: DataSourceType) => {

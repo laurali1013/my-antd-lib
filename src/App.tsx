@@ -1,17 +1,31 @@
-import React from 'react';
+import React,{FC,useState,useEffect} from 'react';
+import axios from 'axios'
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
+// import { library } from '@fortawesome/fontawesome-svg-core';
+// import { fas } from '@fortawesome/free-solid-svg-icons';
+// library.add(fas);
 
-import Input from './components/Input/Input';
-
-library.add(fas);
-
-function App() {
+const App: FC = () => {
+  const handleFileChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
+    const files = e.target.files;
+    if (files) {
+      const uploadedFile = files[0];
+      const formData = new FormData();
+      formData.append(uploadedFile.name, uploadedFile);
+      axios.post("https://jsonplaceholder.typicode.com/posts", formData, {
+        headers: {
+          'Contenx-Type':'multipart/form-data'
+        }
+      }).then(resp => {
+        console.log(resp);
+      }
+      )
+    }
+  }
   return (
-    <>
-      <Input icon='arrow-down' size='lg'/>
-    </>
+    <div className="App" style = {{marginTop:"100px",marginLeft:"100px"}}>
+      <input type="file" name='myFile' onChange={ handleFileChange}/>
+    </div>
   );
 }
 

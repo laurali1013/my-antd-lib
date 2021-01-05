@@ -294,6 +294,12 @@
     - 用户自定义的一些选项
     - 函数防抖debounce
     - 下拉菜单收起
+- upload组件的异步请求
+  - axios
+    - JSONPlaceholder本地的mock server
+    - Mocky.io
+  - form表单提交、**javascript发送异步请求**实现上传文件
+
 
 
 
